@@ -1,4 +1,4 @@
-package com.bridgelabz.spring;
+package com.spring.factory;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
@@ -7,18 +7,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-public class Employee1Test {
+public class Factory {
 	public static void main(String[] args) {
 		Resource resource=new ClassPathResource("Spring.xml");
 		BeanFactory factory=new XmlBeanFactory(resource);
-		//ApplicationContext factory=new ClassPathXmlApplicationContext("Spring.xml");
-		Employee1 employee=(Employee1)factory.getBean("employee1");
-	  employee.setName("patik");
-		employee.show();
-		System.out.println(employee.hashCode());
-		Employee1 employee1=(Employee1)factory.getBean("employee1");
-		employee1.setName("dev");
-		employee1.show();
-		System.out.println(employee1.hashCode());
+	//	ApplicationContext context = new ClassPathXmlApplicationContext("Spring.xml");
+		A a = (A) factory.getBean("a");
+		a.msg();
 	}
 }

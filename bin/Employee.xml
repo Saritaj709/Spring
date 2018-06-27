@@ -7,4 +7,21 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
 	
+	<bean id="pfactory" class="com.spring.factory2.PrintableFactory1"></bean>  
+<bean id="p" class="com.spring.factory2.PrintableFactory1" factory-method="getPrintable"   
+factory-bean="pfactory"></bean>  
+	
+<bean id="q" class="com.bridgelabz.maps.Question">  
+<constructor-arg value="11"></constructor-arg>  
+<constructor-arg value="What is Java?"></constructor-arg>  
+<constructor-arg>  
+<map>  
+<entry key="Java is a Programming Language"  value="Ajay Kumar"></entry>  
+<entry key="Java is a Platform" value="John Smith"></entry>  
+<entry key="Java is an Island" value="Raj Kumar"></entry>  
+</map>  
+</constructor-arg>  
+</bean> 
+  
+	
 	</beans>
