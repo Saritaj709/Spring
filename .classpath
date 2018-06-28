@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="/home/bridgelabz/Downloads/spcorejars/org.springframework.context-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="/home/bridgelabz/Downloads/spcorejars/org.springframework.core-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="/home/bridgelabz/Downloads/spcorejars/org.springframework.expression-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="/home/bridgelabz/Downloads/org.springframework.context-3.2.0.release.jar"/>
+	<classpathentry kind="lib" path="/home/bridgelabz/Downloads/org.springframework.core-3.1.0.release.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

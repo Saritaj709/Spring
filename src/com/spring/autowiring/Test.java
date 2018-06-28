@@ -12,11 +12,11 @@ public class Test {
 		ApplicationContext context = new ClassPathXmlApplicationContext("autowire.xml");
 		Apple apple = context.getBean("apple", Apple.class);
 		Ball ball= context.getBean("ball", Ball.class);
-		/*
-		 * Resource resource=new ClassPathResource("Spring.xml"); BeanFactory
-		 * factory=new XmlBeanFactory(resource); Apple
-		 * apple=(Apple)factory.getBean("apple");
-		 */
+		
+		// Resource resource=new ClassPathResource("Spring.xml"); BeanFactory
+		// factory=new XmlBeanFactory(resource); 
+	//	 Apple apple=(Apple)factory.getBean("apple");
+		 
 		ball.print();
 		apple.display();
 	}
