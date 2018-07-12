@@ -1,12 +1,12 @@
 package com.bridgelabz.fundoo.exception;
 
-public class InvalidNumberException extends Exception {
+public class LoginException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-    public InvalidNumberException(String message) {
+    public LoginException(String message) {
     	super(message);
     }
 }

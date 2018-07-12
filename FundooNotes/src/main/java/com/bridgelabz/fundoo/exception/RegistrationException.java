@@ -1,12 +1,12 @@
 package com.bridgelabz.fundoo.exception;
 
-public class InvalidNameException extends Exception {
+public class RegistrationException extends Exception {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-    public InvalidNameException(String message) {
+    public RegistrationException(final String message) {
     	super(message);
     }
 }

@@ -1,12 +1,8 @@
 package com.bridgelabz.fundoo.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.stereotype.Component;
 
-@Component
-@Document(collection = "FundooNotes")
-public class User {
+public class RegistrationDTO {
 	@Id
 	private String id;
 	private String email;
@@ -16,8 +12,8 @@ public class User {
 	private String password;
 	private String confirmPassword;
 
-	public User() {
-		super();
+	public RegistrationDTO() {
+
 	}
 
 	public String getId() {
@@ -74,6 +70,12 @@ public class User {
 
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	@Override
+	public String toString() {
+		return "RegistrationDTO [email=" + email + ", firstname=" + firstname + ", lastname=" + lastname + ", phoneNo="
+				+ phoneNo + ", password=" + password + ", confirmPassword=" + confirmPassword + "]";
 	}
 
 }

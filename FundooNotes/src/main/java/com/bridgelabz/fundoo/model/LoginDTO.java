@@ -1,27 +1,27 @@
 package com.bridgelabz.fundoo.model;
 
 public class LoginDTO {
-	private String message;
-	private int status;
+	private String email;
+	private String password;
 
 	public LoginDTO() {
 		super();
 	}
 
-	public String getMessage() {
-		return message;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
