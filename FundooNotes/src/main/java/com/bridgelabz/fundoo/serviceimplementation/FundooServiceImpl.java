@@ -21,8 +21,8 @@ public class FundooServiceImpl implements FundooService {
 	@Autowired
 	UserRepository userRepository;
 
-	@Autowired
-	User user;
+	/*@Autowired
+	User user;*/
 	
 	@Override
 	public List<User> getAllUsers() {
@@ -34,7 +34,7 @@ public class FundooServiceImpl implements FundooService {
 	@Override
 	public void saveUser(RegistrationDTO dto) throws RegistrationException {
 		// TODO Auto-generated method stub
-		//User user = new User();
+		User user = new User();
 		System.out.println("user " + user);
 		int statusCode = FundooUtility.validateUser(dto);
 		// Optional<User> checkUser=userRepository.findById(dto.getEmail());
