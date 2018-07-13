@@ -10,7 +10,7 @@ import com.bridgelabz.fundonotes.module.model.User;
 public interface FundooService {
 	public List<User> getAllUsers();
 
-	public void saveUser(RegistrationDTO user) throws RegistrationException;
+	public String saveUser(RegistrationDTO user) throws RegistrationException;
 
 	public boolean getUserByEmail(String email);
 
@@ -19,4 +19,10 @@ public interface FundooService {
 	public boolean updateUser(User user);
 
 	public boolean deleteUser(String email);
+
+	public boolean activateJwt(String token);
+
+	public boolean sendActivationMail(String token, RegistrationDTO registrationDto);
+
+	public boolean forgetPassword(String email);
 }
