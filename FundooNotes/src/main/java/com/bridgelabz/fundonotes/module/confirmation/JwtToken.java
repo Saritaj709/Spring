@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.jwt;
+package com.bridgelabz.fundonotes.module.confirmation;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.fundoo.model.User;
+import com.bridgelabz.fundonotes.module.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

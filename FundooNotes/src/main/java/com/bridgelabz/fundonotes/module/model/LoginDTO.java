@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.model;
+package com.bridgelabz.fundonotes.module.model;
 
 public class LoginDTO {
 	private String email;

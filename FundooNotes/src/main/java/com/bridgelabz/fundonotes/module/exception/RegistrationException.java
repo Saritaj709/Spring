@@ -1,4 +1,4 @@
-package com.bridgelabz.fundoo.exception;
+package com.bridgelabz.fundonotes.module.exception;
 
 public class RegistrationException extends Exception {
 
