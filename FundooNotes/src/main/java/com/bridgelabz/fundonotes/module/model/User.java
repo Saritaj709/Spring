@@ -19,7 +19,7 @@ public class User implements Serializable {
 	private String lastname;
 	private String phoneNo;
 	private String password;
-	private String activate;
+	private boolean activate;
 
 	public User() {
 		super();
@@ -65,11 +65,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getActivate() {
+	public boolean isActivate() {
 		return activate;
 	}
 
-	public void setActivate(String activate) {
+	public void setActivate(boolean activate) {
 		this.activate = activate;
 	}
 
@@ -78,5 +78,5 @@ public class User implements Serializable {
 		return "User [email=" + email + ", firstname=" + firstname + ", lastname=" + lastname + ", phoneNo=" + phoneNo
 				+ ", password=" + password + ", activate=" + activate + "]";
 	}
-
+	
 }

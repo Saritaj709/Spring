@@ -74,22 +74,20 @@ public class FundooServiceImpl implements FundooService {
 	@Override
 	public void loginUser(LoginDTO loginDto) throws LoginException {
 		// TODO Auto-generated method stub
-		int statusCode = FundooUtility.validateLogin(loginDto);
+		FundooUtility.validateLogin(loginDto);
 		Optional<User> checkUser=userRepository.findByEmail(loginDto.getEmail());
-		if(statusCode==1) {
-		if(checkUser.isPresent()) {
-			if(checkUser.get().getPassword().equals(loginDto.getPassword())) {
-				System.out.println("Login Successful");
-			}else {
+		if(!checkUser.isPresent())
+			throw new LoginException("This Email id does not exist");
+			else if(!checkUser.get().getPassword().equals(loginDto.getPassword()))
 				throw new LoginException("Password does invalid");
-			}
+		else if(!checkUser.get().isActivate()){
+			throw new LoginException("User account is not activated yet");
 		}
 		else {
-			throw new LoginException("Email does not exist");
-			}
+			System.out.println("Successfully logged in");
 		}
-	}
-
+		}
+	
 	@Override
 	public boolean updateUser(User user) {
 		// TODO Auto-generated method stub
@@ -119,7 +117,7 @@ public class FundooServiceImpl implements FundooService {
 		// TODO Auto-generated method stub
 		Claims claims=Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("Sarita")).parseClaimsJws(token).getBody();
 		Optional<User> user=userRepository.findById(claims.getSubject());
-		user.get().setActivate("true");
+		user.get().setActivate(true);
 		userRepository.save(user.get());
 		System.out.println("User account activated ");
 		return true;

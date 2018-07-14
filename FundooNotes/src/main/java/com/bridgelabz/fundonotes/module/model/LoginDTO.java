@@ -3,7 +3,7 @@ package com.bridgelabz.fundonotes.module.model;
 public class LoginDTO {
 	private String email;
 	private String password;
-
+  
 	public LoginDTO() {
 		super();
 	}

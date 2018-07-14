@@ -51,25 +51,27 @@ public class UserController {
 
 	}*/
 
-	@RequestMapping("/users")
+	@RequestMapping(value="/users",method=RequestMethod.GET)
 	public List<User> getAllUsers() {
 		return fundooService.getAllUsers();
 	}
 	
-	@RequestMapping(value="/activateaccount")
-	public ResponseEntity<String> activateAccount(HttpServletRequest request) throws RegistrationException{
-		 
+	@RequestMapping(value="/activateaccount",method=RequestMethod.GET)
+	public ResponseEntity<ResponseDTO> activateAccount(HttpServletRequest request) throws RegistrationException{
+		 ResponseDTO response=new ResponseDTO();
 		String token=request.getQueryString();
 		System.out.println(token);
 		//String token=fundooService.saveUser(user);
 		System.out.println(token);
 		if(fundooService.activateJwt(token)) {
-			String msg="Account activated successfully";
-			return new ResponseEntity<>(msg,HttpStatus.OK);
+			response.setMessage("Account activated successfully");
+			response.setStatus(1);
+			return new ResponseEntity<>(response,HttpStatus.OK);
 		}
 		else {
-			String msg="Account not yet activated";
-			return new ResponseEntity<>(msg,HttpStatus.FORBIDDEN);
+			response.setMessage("Account not yet activated");
+			response.setStatus(-1);
+			return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -116,14 +118,15 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO user,HttpServletRequest request) {
+	public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO user,HttpServletRequest res) {
 		ResponseDTO response = new ResponseDTO();
 		fundooService.loginUser(user);
 		response.setMessage("User with email " + user.getEmail() + ", Sucessfully logged in");
 		response.setStatus(2);
 		//String jwt = jwtToken.tokenGenerator(user);
 		//String token = jwtToken.parseJwtToken(jwt);
-		//request.getHeader(jwt);
+		//res.getHeader(jwt);
+		//System.out.println(res.getHeader(jwt));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
@@ -137,7 +140,7 @@ public class UserController {
 			return new ResponseEntity<>("password not sent",HttpStatus.FORBIDDEN);
 		}	
 	}
-	@RequestMapping(value="/activate")
+	@RequestMapping(value="/activate",method=RequestMethod.GET)
 	public ResponseEntity<String> activate(@RequestBody RegistrationDTO user){
 		String jwt = jwtToken.tokenGenerator(user);
 		String token = jwtToken.parseJwtToken(jwt);
