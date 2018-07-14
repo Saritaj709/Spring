@@ -47,7 +47,8 @@ public class FundooServiceImpl implements FundooService {
 			user.setFirstname(dto.getFirstname());
 			user.setLastname(dto.getLastname());
 			user.setPhoneNo(dto.getPhoneNo());
-			user.setPassword(bcrypt.Bcrypt(dto));
+			//user.setPassword(bcrypt.Bcrypt(dto));
+			user.setPassword(dto.getPassword());
 			userRepository.insert(user);
 			JwtToken jwt=new JwtToken();
 			String jwtToken = jwt.tokenGenerator(dto);
