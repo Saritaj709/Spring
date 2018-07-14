@@ -57,10 +57,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/activateaccount")
-	public ResponseEntity<String> activateAccount(@RequestParam(value="token") RegistrationDTO user) throws RegistrationException{
+	public ResponseEntity<String> activateAccount(HttpServletRequest request) throws RegistrationException{
 		 
-		//String token=request.getQueryString();
-		String token=fundooService.saveUser(user);
+		String token=request.getQueryString();
+		System.out.println(token);
+		//String token=fundooService.saveUser(user);
 		System.out.println(token);
 		if(fundooService.activateJwt(token)) {
 			String msg="Account activated successfully";
@@ -80,8 +81,8 @@ public class UserController {
 		response.setMessage("User with email " + user.getEmail() + " registered successfully");
 		response.setStatus(1);
 		String jwt = jwtToken.tokenGenerator(user);
-		String token = jwtToken.parseJwtToken(jwt);
-		mailService.activationMail(token,user);
+		//String token = jwtToken.parseJwtToken(jwt);
+		mailService.activationMail(jwt,user);
 		//fundooService.activateJwt(token);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
@@ -128,7 +129,7 @@ public class UserController {
 	
 	@RequestMapping(value="/forgetpassword",method=RequestMethod.POST)
 	public ResponseEntity<String> forgetPassword(@RequestBody User user){
-		if(fundooService.forgetPassword(user.getEmail())) {
+		if(mailService.passwordResetMail(user.getEmail())) {
 			logger.info("password sent to email");
 			return new ResponseEntity<>("password sent",HttpStatus.OK);
 		}

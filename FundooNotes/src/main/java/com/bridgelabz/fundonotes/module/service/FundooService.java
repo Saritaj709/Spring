@@ -22,7 +22,7 @@ public interface FundooService {
 
 	public boolean activateJwt(String token);
 
-	public boolean sendActivationMail(String token, RegistrationDTO registrationDto);
+	//public boolean sendActivationMail(String token, RegistrationDTO registrationDto);
 
-	public boolean forgetPassword(String email);
+	//public boolean forgetPassword(String email);
 }
