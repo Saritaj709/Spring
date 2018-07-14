@@ -37,29 +37,29 @@ public class FundooServiceImpl implements FundooService {
 	public String saveUser(RegistrationDTO dto) throws RegistrationException {
 		// TODO Auto-generated method stub
 		User user = new User();
-		BCryptGenerator bcrypt=new BCryptGenerator();
+		BCryptGenerator bcrypt = new BCryptGenerator();
 		System.out.println("user " + user);
 		int statusCode = FundooUtility.validateUser(dto);
-		Optional<User> checkUser=userRepository.findByEmail(dto.getEmail());
+		Optional<User> checkUser = userRepository.findByEmail(dto.getEmail());
 		if (statusCode == 1) {
-			if(!checkUser.isPresent()) {
-			user.setEmail(dto.getEmail());
-			user.setFirstname(dto.getFirstname());
-			user.setLastname(dto.getLastname());
-			user.setPhoneNo(dto.getPhoneNo());
-			//user.setPassword(bcrypt.Bcrypt(dto));
-			user.setPassword(dto.getPassword());
-			userRepository.insert(user);
-			JwtToken jwt=new JwtToken();
-			String jwtToken = jwt.tokenGenerator(dto);
-			return jwtToken;
-			}
-		else {
-			throw new RegistrationException("email id already exists,unable to register");
+			if (!checkUser.isPresent()) {
+				user.setEmail(dto.getEmail());
+				user.setFirstname(dto.getFirstname());
+				user.setLastname(dto.getLastname());
+				user.setPhoneNo(dto.getPhoneNo());
+				user.setPassword(bcrypt.Bcrypt(dto.getPassword()));
+				// user.setPassword(dto.getPassword());
+				userRepository.insert(user);
+				JwtToken jwt = new JwtToken();
+				String jwtToken = jwt.tokenGenerator(dto);
+				return jwtToken;
+			} else {
+				throw new RegistrationException("email id already exists,unable to register");
 			}
 		}
 		return null;
 	}
+
 	@Override
 	public boolean getUserByEmail(String email) {
 		// TODO Auto-generated method stub
@@ -75,19 +75,23 @@ public class FundooServiceImpl implements FundooService {
 	public void loginUser(LoginDTO loginDto) throws LoginException {
 		// TODO Auto-generated method stub
 		FundooUtility.validateLogin(loginDto);
-		Optional<User> checkUser=userRepository.findByEmail(loginDto.getEmail());
-		if(!checkUser.isPresent())
+		Optional<User> checkUser = userRepository.findByEmail(loginDto.getEmail());
+		/*if (!checkUser.isPresent())
 			throw new LoginException("This Email id does not exist");
-			else if(!checkUser.get().getPassword().equals(loginDto.getPassword()))
-				throw new LoginException("Password does invalid");
-		else if(!checkUser.get().isActivate()){
+		else if (!checkUser.get().getPassword().equals(loginDto.getPassword()))
+			throw new LoginException("Password is invalid");
+		else if (!checkUser.get().isActivate()) {
 			throw new LoginException("User account is not activated yet");
-		}
-		else {
-			System.out.println("Successfully logged in");
-		}
-		}
-	
+		} else {*/
+			BCryptGenerator bcrypt = new BCryptGenerator();
+			String hashPass = bcrypt.Bcrypt(checkUser.get().getPassword());
+			if (bcrypt.passwordChecking(loginDto.getPassword(),hashPass)==true)
+				System.out.println("Successfully logged in");
+			else
+				System.out.println("Password unmatched");
+		//}
+	}
+
 	@Override
 	public boolean updateUser(User user) {
 		// TODO Auto-generated method stub
@@ -115,8 +119,9 @@ public class FundooServiceImpl implements FundooService {
 	@Override
 	public boolean activateJwt(String token) {
 		// TODO Auto-generated method stub
-		Claims claims=Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("Sarita")).parseClaimsJws(token).getBody();
-		Optional<User> user=userRepository.findById(claims.getSubject());
+		Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("Sarita")).parseClaimsJws(token)
+				.getBody();
+		Optional<User> user = userRepository.findById(claims.getSubject());
 		user.get().setActivate(true);
 		userRepository.save(user.get());
 		System.out.println("User account activated ");
