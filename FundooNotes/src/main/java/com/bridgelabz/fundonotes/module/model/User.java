@@ -13,6 +13,8 @@ public class User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private String id;
 	@Id
 	private String email;
 	private String firstname;
@@ -20,7 +22,6 @@ public class User implements Serializable {
 	private String phoneNo;
 	private String password;
 	private boolean activate;
-
 	public User() {
 		super();
 	}
@@ -71,6 +72,14 @@ public class User implements Serializable {
 
 	public void setActivate(boolean activate) {
 		this.activate = activate;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override

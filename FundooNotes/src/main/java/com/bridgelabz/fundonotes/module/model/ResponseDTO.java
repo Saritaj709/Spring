@@ -1,5 +1,8 @@
 package com.bridgelabz.fundonotes.module.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ResponseDTO {
 	private String message;
 	private int status;

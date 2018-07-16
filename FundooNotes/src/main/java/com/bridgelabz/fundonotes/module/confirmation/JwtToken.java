@@ -67,4 +67,14 @@ public class JwtToken {
 		JwtBuilder jwtBuilder=Jwts.builder().setId(passkey).setIssuedAt(now).setSubject(email).signWith(SignatureAlgorithm.HS256,KEY);
 		return jwtBuilder.compact();
 	}
+	
+	public String tokenGenerator(String value) {
+		//String email=dto.getEmail();
+		//String passkey=dto.getPassword();
+		//long time=System.currentTimeMillis();
+		long nowMillis=System.currentTimeMillis()+(20*60*60*1000);
+		Date now=new Date(nowMillis);
+		JwtBuilder jwtBuilder=Jwts.builder().setId(value).setIssuedAt(now).signWith(SignatureAlgorithm.HS256,KEY);
+		return jwtBuilder.compact();
+	}
 }

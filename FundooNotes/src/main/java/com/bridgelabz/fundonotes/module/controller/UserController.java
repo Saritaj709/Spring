@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundonotes.module.confirmation.JwtToken;
 import com.bridgelabz.fundonotes.module.exception.RegistrationException;
 import com.bridgelabz.fundonotes.module.mail.MailService;
+import com.bridgelabz.fundonotes.module.model.PasswordDTO;
 import com.bridgelabz.fundonotes.module.model.LoginDTO;
 import com.bridgelabz.fundonotes.module.model.RegistrationDTO;
 import com.bridgelabz.fundonotes.module.model.ResponseDTO;
@@ -42,14 +43,8 @@ public class UserController {
 	@Autowired
 	private MailService mailService;
 	
-	/*@RequestMapping("/jwt")
-	public ResponseEntity<String> jwtToken(@RequestBody RegistrationDTO user) {
-
-		String jwt = jwtToken.tokenGenerator(user);
-		String token = jwtToken.parseJwtToken(jwt);
-		return new ResponseEntity<>("User jwt details " + jwt + " token is " + token, HttpStatus.OK);
-
-	}*/
+	@Autowired 
+	ResponseDTO response;
 
 	@RequestMapping(value="/users",method=RequestMethod.GET)
 	public List<User> getAllUsers() {
@@ -58,10 +53,8 @@ public class UserController {
 	
 	@RequestMapping(value="/activateaccount",method=RequestMethod.GET)
 	public ResponseEntity<ResponseDTO> activateAccount(HttpServletRequest request) throws RegistrationException{
-		 ResponseDTO response=new ResponseDTO();
+		 //ResponseDTO response=new ResponseDTO();
 		String token=request.getQueryString();
-		System.out.println(token);
-		//String token=fundooService.saveUser(user);
 		System.out.println(token);
 		if(fundooService.activateJwt(token)) {
 			response.setMessage("Account activated successfully");
@@ -78,34 +71,43 @@ public class UserController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> registerUser(@RequestBody RegistrationDTO user) throws RegistrationException {
 
-		ResponseDTO response = new ResponseDTO();
+		//ResponseDTO response = new ResponseDTO();
 		fundooService.saveUser(user);
 		response.setMessage("User with email " + user.getEmail() + " registered successfully");
 		response.setStatus(1);
 		String jwt = jwtToken.tokenGenerator(user);
-		//String token = jwtToken.parseJwtToken(jwt);
 		mailService.activationMail(jwt,user);
-		//fundooService.activateJwt(token);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseDTO> updateUser(@RequestBody User user) {
-		ResponseDTO response = new ResponseDTO();
-		if (fundooService.getUserByEmail(user.getEmail()) == false) {
-			response.setMessage("User with " + user.getEmail() + " does not exist");
-			response.setStatus(-1);
-			return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-		}
+	@RequestMapping(value = "/reset", method = RequestMethod.POST)
+	public ResponseEntity<ResponseDTO> updateUser(@RequestBody User user) throws RegistrationException {
+		 if(fundooService.getUserByEmail(user.getEmail())) {
 		fundooService.updateUser(user);
-		response.setMessage("User with email " + user.getEmail() + " successfully updated");
+		String jwt=jwtToken.tokenGenerator(user);
+		mailService.passwordResetMail(user.getEmail(),jwt);
+		response.setMessage("please check mail and click on confirmation mail");
 		response.setStatus(1);
+		 }
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
+/*
+	@RequestMapping(value="/password",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO> resetPassword(@RequestBody User user) throws RegistrationException{
+		 if(user.isChangepwd()) {
+			fundooService.changePassword(new PasswordDTO());
+				response.setMessage("User with email " + user.getEmail() + " successfully updated");
+				response.setStatus(1);	
+				return new ResponseEntity<>(response, HttpStatus.OK);
+		 }
+		 response.setMessage("User not found");
+			response.setStatus(-1);	
+		 return new ResponseEntity<>(response, HttpStatus.OK);
+		 
+	}*/
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseDTO> deleteUser(@RequestBody User user) {
-		ResponseDTO response = new ResponseDTO();
+		//ResponseDTO response = new ResponseDTO();
 		if (fundooService.getUserByEmail(user.getEmail()) == false) {
 			response.setMessage("User with email " + user.getEmail() + " exists");
 			response.setStatus(-1);
@@ -119,26 +121,19 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO user,HttpServletRequest res) {
-		ResponseDTO response = new ResponseDTO();
+		//ResponseDTO response = new ResponseDTO();
 		fundooService.loginUser(user);
 		response.setMessage("User with email " + user.getEmail() + ", Sucessfully logged in");
 		response.setStatus(2);
-		//String jwt = jwtToken.tokenGenerator(user);
-		//String token = jwtToken.parseJwtToken(jwt);
-		//res.getHeader(jwt);
-		//System.out.println(res.getHeader(jwt));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/forgetpassword",method=RequestMethod.POST)
-	public ResponseEntity<String> forgetPassword(@RequestBody User user){
-		if(mailService.passwordResetMail(user.getEmail())) {
-			logger.info("password sent to email");
-			return new ResponseEntity<>("password sent",HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<>("password not sent",HttpStatus.FORBIDDEN);
-		}	
+	public ResponseEntity<ResponseDTO> forgetPassword(@RequestParam(value="email") String email){
+		fundooService.forgetPassword(email);
+		response.setMessage("link sent to email,pls check and verify");
+			response.setStatus(1);
+			return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	@RequestMapping(value="/activate",method=RequestMethod.GET)
 	public ResponseEntity<String> activate(@RequestBody RegistrationDTO user){
@@ -152,5 +147,13 @@ public class UserController {
 		else {
 			return new ResponseEntity<>("code not sent",HttpStatus.FORBIDDEN);
 		}	
+	}
+	@RequestMapping(value="/resetpassword",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO> resetPassword(@RequestParam(value="token") String token,@RequestBody PasswordDTO passwordDto) throws Exception{
+		//ResponseDTO response=new ResponseDTO();
+			fundooService.passwordReset(token,passwordDto);
+			response.setMessage("Congratulations,your password is successfully changed");
+			response.setStatus(4);
+			return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 }

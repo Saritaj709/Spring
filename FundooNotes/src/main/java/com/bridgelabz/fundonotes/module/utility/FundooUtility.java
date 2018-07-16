@@ -3,6 +3,7 @@ package com.bridgelabz.fundonotes.module.utility;
 import com.bridgelabz.fundonotes.module.exception.LoginException;
 import com.bridgelabz.fundonotes.module.exception.RegistrationException;
 import com.bridgelabz.fundonotes.module.model.LoginDTO;
+import com.bridgelabz.fundonotes.module.model.PasswordDTO;
 import com.bridgelabz.fundonotes.module.model.RegistrationDTO;
 
 public class FundooUtility {
@@ -38,6 +39,12 @@ public class FundooUtility {
 	public static int validateLogin(LoginDTO loginDto) throws LoginException{
 		if(!loginDto.getEmail().matches(EMAIL)) {
 			throw new LoginException("Invalid email format");
+		}
+		return 1;
+	}
+	public static int validateReset(PasswordDTO passwordDto) throws RegistrationException {
+		if(!passwordDto.getPassword().equals(passwordDto.getConfirmPassword())) {
+			throw new RegistrationException("Passwords should be same");
 		}
 		return 1;
 	}

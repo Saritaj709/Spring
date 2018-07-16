@@ -33,12 +33,12 @@ public class GlobalExceptionHandler {
 		System.out.println(e);
 		return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
 	}
-	@ExceptionHandler(Exception.class)
+	/*@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseDTO> controller(Exception e) {
 		logger.error("other exceptions");
 		ResponseDTO response=new ResponseDTO();
 		response.setMessage("Some exceptions occured, "+e.getMessage());
 		response.setStatus(-1);
 		return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-	}
+	}*/
 }
