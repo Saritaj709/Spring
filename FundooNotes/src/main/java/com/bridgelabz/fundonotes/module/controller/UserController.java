@@ -51,9 +51,14 @@ public class UserController {
 		return fundooService.getAllUsers();
 	}
 	
+	@RequestMapping("/hello")
+	public String hello(){
+		logger.info("Welcome to access RequestMapping: /hello!");
+		return "Hello World!";
+	}
+	
 	@RequestMapping(value="/activateaccount",method=RequestMethod.GET)
 	public ResponseEntity<ResponseDTO> activateAccount(HttpServletRequest request) throws RegistrationException{
-		 //ResponseDTO response=new ResponseDTO();
 		String token=request.getQueryString();
 		System.out.println(token);
 		if(fundooService.activateJwt(token)) {
@@ -71,7 +76,6 @@ public class UserController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> registerUser(@RequestBody RegistrationDTO user) throws RegistrationException {
 
-		//ResponseDTO response = new ResponseDTO();
 		fundooService.saveUser(user);
 		response.setMessage("User with email " + user.getEmail() + " registered successfully");
 		response.setStatus(1);
@@ -80,7 +84,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/reset", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/reset", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> updateUser(@RequestBody User user) throws RegistrationException {
 		 if(fundooService.getUserByEmail(user.getEmail())) {
 		fundooService.updateUser(user);
@@ -90,7 +94,7 @@ public class UserController {
 		response.setStatus(1);
 		 }
 		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+	}*/
 /*
 	@RequestMapping(value="/password",method=RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> resetPassword(@RequestBody User user) throws RegistrationException{
@@ -135,7 +139,7 @@ public class UserController {
 			response.setStatus(1);
 			return new ResponseEntity<>(response,HttpStatus.OK);
 	}
-	@RequestMapping(value="/activate",method=RequestMethod.GET)
+	/*@RequestMapping(value="/activate",method=RequestMethod.GET)
 	public ResponseEntity<String> activate(@RequestBody RegistrationDTO user){
 		String jwt = jwtToken.tokenGenerator(user);
 		String token = jwtToken.parseJwtToken(jwt);
@@ -147,7 +151,7 @@ public class UserController {
 		else {
 			return new ResponseEntity<>("code not sent",HttpStatus.FORBIDDEN);
 		}	
-	}
+	}*/
 	@RequestMapping(value="/resetpassword",method=RequestMethod.PUT)
 	public ResponseEntity<ResponseDTO> resetPassword(@RequestParam(value="token") String token,@RequestBody PasswordDTO passwordDto) throws Exception{
 		//ResponseDTO response=new ResponseDTO();
