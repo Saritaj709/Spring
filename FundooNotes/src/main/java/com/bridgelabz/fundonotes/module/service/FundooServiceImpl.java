@@ -49,7 +49,6 @@ public class FundooServiceImpl implements FundooService {
 	public String saveUser(RegistrationDTO dto) throws RegistrationException {
 		
 		User user = new User();
-		//BCryptPassword bcrypt = new BCryptPassword();
 		System.out.println("user " + user);
 		int statusCode = FundooUtility.validateUser(dto);
 		Optional<User> checkUser = userRepository.findByEmail(dto.getEmail());
@@ -92,7 +91,6 @@ public class FundooServiceImpl implements FundooService {
 		else if (!checkUser.get().isActivate()) {
 			throw new LoginException("User account is not activated yet");
 		} else {
-			//BCryptPassword bcrypt = new BCryptPassword();
 			if (!passwordEncoder.matches(loginDto.getPassword(),checkUser.get().getPassword())) {
 	          throw new LoginException("Password unmatched");
 			}
@@ -136,30 +134,7 @@ public class FundooServiceImpl implements FundooService {
 		System.out.println("User account activated ");
 		return true;
 	}
-
-/*	public String activateChange(String token) throws Exception {
-		Claims claims=Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("Sarita")).parseClaimsJws(token)
-				.getBody();
-		Optional<User> user=userRepository.findById(claims.getSubject());
-		return claims.getSubject();
-	}
-
-	public boolean changePassword(String token,PasswordDTO dto) throws Exception {
-		// TODO Auto-generated method stub
-		FundooUtility.validateReset(dto);
-		String subject=activateChange(token);
-		Optional<User> user=userRepository.findById(subject);
-		if(!userRepository.existsById(subject)) {
-			throw new Exception("User not found");
-		}
-		else {
-			user.get().setPassword(dto.getPassword());
-			userRepository.save(user.get());
-		}
-		userRepository.save(user.get());
-			return true;
-	}*/
-
+	
 	@Override
 	public void forgetPassword(String email) {
 		// TODO Auto-generated method stub
@@ -173,7 +148,6 @@ public class FundooServiceImpl implements FundooService {
 		MailDTO mail=new MailDTO();
 		mail.setTo(email);
 		mail.setSubject("Password reset mail");
-		//mail.setText("http://localhost:8080/Fundoonotes/forgetpassword/?token="+generatedToken);
 	    mail.setText("http://localhost:8080/Fundoonotes/resetpassword/?token="+generatedToken);
 		emailSender.sendMail(mail);
 	}
@@ -185,7 +159,6 @@ public class FundooServiceImpl implements FundooService {
 	    System.out.println("Subject : "+claims.getSubject());
 		Optional<User> user=userRepository.findById(claims.getSubject());
 		FundooUtility.validateReset(dto);
-		//if(!userRepository.existsByEmail(claims.getSubject())) {
 		if(!user.isPresent()) {
 			throw new Exception("User not found");
 		}

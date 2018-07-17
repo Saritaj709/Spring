@@ -148,7 +148,7 @@ public class UserController {
 			return new ResponseEntity<>("code not sent",HttpStatus.FORBIDDEN);
 		}	
 	}
-	@RequestMapping(value="/resetpassword",method=RequestMethod.POST)
+	@RequestMapping(value="/resetpassword",method=RequestMethod.PUT)
 	public ResponseEntity<ResponseDTO> resetPassword(@RequestParam(value="token") String token,@RequestBody PasswordDTO passwordDto) throws Exception{
 		//ResponseDTO response=new ResponseDTO();
 			fundooService.passwordReset(token,passwordDto);
