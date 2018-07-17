@@ -93,6 +93,11 @@
             <scope>compile</scope>
         </dependency>
 
+<!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+		</dependency>
 
 		
 	</dependencies>
